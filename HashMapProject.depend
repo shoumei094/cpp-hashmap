@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1463584272 source:c:\cpp\hashmapproject\main.cpp
+	<iostream>
+	<string>
+	<sstream>
+	"HashMap.hpp"
+
+1463584034 source:c:\cpp\hashmapproject\hashmap.cpp
+	<iostream>
+	<string>
+	<sstream>
+	<functional>
+	"HashMap.hpp"
+
+1463584668 c:\cpp\hashmapproject\hashmap.hpp
+	<functional>
+	<string>
+
