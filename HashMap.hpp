@@ -17,19 +17,17 @@ public:
 
 HashMap();
 
-HashMap(HashFunction hashFunction);
-
 HashMap(const HashMap& hm);
 ~HashMap();
 HashMap& operator=(const HashMap& hm);
 
-void add(const std::string& key, const std::string& value);
+void put(const std::string& key, const std::string& value);
 
 void remove(const std::string& key);
 
-bool contains(const std::string& key) const;
+bool containsKey(const std::string& key) const;
 
-std::string value(const std::string& key) const;
+std::string get(const std::string& key) const;
 
 unsigned int size() const;
 

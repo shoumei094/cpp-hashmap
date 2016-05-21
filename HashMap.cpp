@@ -23,8 +23,6 @@ struct Hash
 
 };
 
-
-
 HashMap::HashMap():
 bc(INITIAL_BUCKET_COUNT), sz(0)
 {
@@ -40,93 +38,110 @@ bc(INITIAL_BUCKET_COUNT), sz(0)
 
 }
 
-HashMap::HashMap(HashFunction hashFunction):
-SomeHashFunction(hashFunction), bc(INITIAL_BUCKET_COUNT), sz(0)
-{
-
-    HashTable = new Node*[INITIAL_BUCKET_COUNT];
-
-
-
-}
-
 HashMap::~HashMap()
 {
 
 }
 
-void HashMap::add(const std::string& key, const std::string& value)
+void HashMap::put(const std::string& key, const std::string& value)
 {
+
     unsigned int hashValue = SomeHashFunction(key);
     unsigned int i = hashValue % HashMap::bucketCount();
 
-    if(HashTable[i] == nullptr)
+    // break out of the function if the key already exists
+    if(containsKey(key))
     {
-        HashTable[i] = new Node;
-        HashTable[i]->key = key;
-        HashTable[i]->value = value;
-        HashTable[i]->next = nullptr;
+        return;
     }
-    else
+
+    // create a new key-value pairing
+    Node* n = new Node;
+    n->key = key;
+    n->value = value;
+    n->next = nullptr;
+
+    Node* temp = HashTable[i];
+
+    // pass the reference of the new key-value pairing to the root if it is null
+    if(temp == nullptr)
     {
-        Node* n = HashTable[i];
-
-        while(n->next != nullptr)
-        {
-            if(n->key == key)
-            {
-                std::cout << "Oops";
-                return;
-            }
-            n = n->next;
-        }
-
-        if(n->key == key)
-        {
-            std::cout << "Oops";
-            return;
-        }
-
-        n->next = new Node;
-        n->next->key = key;
-        n->next->value = value;
-        n->next->next = nullptr;
-
+        HashTable[i] = n;
+        sz++;
+        return;
     }
+
+    // traverse through the linked list and have "temp" refer to the head Node
+    while(temp->next != nullptr)
+    {
+        temp = temp->next;
+    }
+
+    temp->next = n;
+    sz++;
 
 }
 
 void HashMap::remove(const std::string& key)
 {
+
     unsigned int hashValue = SomeHashFunction(key);
     unsigned int i = hashValue % HashMap::bucketCount();
 
-    if(HashTable[i] != nullptr)
+    Node* temp = HashTable[i];
+
+    if(temp == nullptr)
     {
-        Node* n = HashTable[i];
+        return;
+    }
 
+    if(temp->key == key)
+    {
+        HashTable[i] = temp->next;
+        temp->next = nullptr;
+        delete temp;
+        sz--;
+        return;
+    }
 
+    Node* curr = temp->next;
+
+    while(curr != nullptr)
+    {
+        if(curr->key == key)
+        {
+            temp->next = curr->next;
+            curr->next = nullptr;
+            delete curr;
+            sz--;
+            return;
+        }
+
+        temp = curr;
+        curr = curr->next;
     }
 
 }
 
-bool HashMap::contains(const std::string& key) const
+bool HashMap::containsKey(const std::string& key) const
 {
+
     unsigned int hashValue = SomeHashFunction(key);
     unsigned int i = hashValue % HashMap::bucketCount();
 
-    Node* n = HashTable[i];
+    Node* temp = HashTable[i];
 
-    while(n->next != nullptr)
+    while(temp != nullptr)
     {
-        if(n->key == key)
+        if(temp->key == key)
         {
             return true;
         }
-        n = n-> next;
+        temp = temp-> next;
     }
 
     return false;
+
 }
 
 void HashMap::reHash()
@@ -149,7 +164,7 @@ HashMap::HashMap(const HashMap& hm)
 
 }
 
-std::string HashMap::value(const std::string& key) const
+std::string HashMap::get(const std::string& key) const
 {
     return "Hi";
 }
