@@ -46,14 +46,15 @@ HashMap::~HashMap()
 void HashMap::put(const std::string& key, const std::string& value)
 {
 
-    unsigned int hashValue = SomeHashFunction(key);
-    unsigned int i = hashValue % HashMap::bucketCount();
-
     // break out of the function if the key already exists
     if(containsKey(key))
     {
         return;
     }
+
+    // initialize
+    unsigned int hashValue = SomeHashFunction(key);
+    unsigned int i = hashValue % HashMap::bucketCount();
 
     // create a new key-value pairing
     Node* n = new Node;
@@ -85,6 +86,7 @@ void HashMap::put(const std::string& key, const std::string& value)
 void HashMap::remove(const std::string& key)
 {
 
+    // initialize
     unsigned int hashValue = SomeHashFunction(key);
     unsigned int i = hashValue % HashMap::bucketCount();
 
@@ -151,7 +153,7 @@ void HashMap::reHash()
 
 double HashMap::loadFactor() const
 {
-    return 0;
+    return (double)sz / (double)bc;
 }
 
 void HashMap::tableCopy(Node *Target[], Node *Source[], unsigned int cap)
@@ -166,7 +168,27 @@ HashMap::HashMap(const HashMap& hm)
 
 std::string HashMap::get(const std::string& key) const
 {
-    return "Hi";
+
+    // initialize
+    unsigned int hashValue = SomeHashFunction(key);
+    unsigned int i = hashValue % HashMap::bucketCount();
+
+    std::string val = "";
+
+    Node* temp = HashTable[i];
+
+    while(temp != nullptr)
+    {
+        if(temp->key == key)
+        {
+            val = temp->value;
+        }
+
+        temp = temp->next;
+    }
+
+    return val;
+
 }
 
 void HashMap::ClearTable()
@@ -176,6 +198,27 @@ void HashMap::ClearTable()
 
 unsigned int HashMap::maxBucketSize() const
 {
+
+    unsigned int max = 0;
+
+    for(int i = 0; i < bc; i++)
+    {
+        Node* temp = HashTable[i];
+        unsigned int count = 0;
+
+        while(temp != nullptr)
+        {
+            count++;
+            temp = temp->next;
+        }
+
+        if(count > max)
+        {
+            max = count;
+        }
+    }
+
+    return max;
 
 }
 
