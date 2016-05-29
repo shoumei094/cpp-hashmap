@@ -38,7 +38,25 @@ bc(INITIAL_BUCKET_COUNT), sz(0)
 
 }
 
+HashMap::HashMap(const HashMap& hm):
+sz(hm.sz), bc(hm.bc)
+{
+    Hash h;
+    SomeHashFunction = std::bind(&Hash::DefaultHashFunction, &h, std::placeholders::_1);
+
+    HashTable = new Node*[hm.bc];
+    tableCopy(HashTable, hm.HashTable, hm.bc);
+}
+
 HashMap::~HashMap()
+{
+    for (unsigned int i = 0; i < bc; i++)
+    {
+
+    }
+}
+
+HashMap& HashMap::operator=(const HashMap& hm)
 {
 
 }
@@ -158,12 +176,10 @@ double HashMap::loadFactor() const
 
 void HashMap::tableCopy(Node *Target[], Node *Source[], unsigned int cap)
 {
-
-}
-
-HashMap::HashMap(const HashMap& hm)
-{
-
+    for (unsigned int i = 0; i < cap; i++)
+    {
+        Target[i] = Source[i];
+    }
 }
 
 std::string HashMap::get(const std::string& key) const
@@ -201,7 +217,7 @@ unsigned int HashMap::maxBucketSize() const
 
     unsigned int max = 0;
 
-    for(int i = 0; i < bc; i++)
+    for(unsigned int i = 0; i < bc; i++)
     {
         Node* temp = HashTable[i];
         unsigned int count = 0;
