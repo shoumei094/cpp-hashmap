@@ -32,7 +32,7 @@ bc(INITIAL_BUCKET_COUNT), sz(0)
 
     HashTable = new Node*[INITIAL_BUCKET_COUNT];
 
-    for(int i = 0; i < INITIAL_BUCKET_COUNT; i++) {
+    for(unsigned int i = 0; i < INITIAL_BUCKET_COUNT; i++) {
         HashTable[i] = nullptr;
     }
 
@@ -52,8 +52,25 @@ HashMap::~HashMap()
 {
     for (unsigned int i = 0; i < bc; i++)
     {
+        Node* temp = HashTable[i];
+        Node* curr;
 
+        while (curr != nullptr)
+        {
+            curr = temp->next;
+            temp->next = nullptr;
+            delete temp;
+            temp = curr;
+        }
+
+        temp = nullptr;
+        curr = nullptr;
     }
+
+    sz = 0;
+    bc = INITIAL_BUCKET_COUNT;
+
+    delete[] HashTable;
 }
 
 HashMap& HashMap::operator=(const HashMap& hm)
