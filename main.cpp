@@ -49,7 +49,7 @@ int main()
 
     cout << a2 << endl;
     cout << g2 << endl;
-    cout << hashMap.maxBucketSize() << endl;
+    cout << m2 << endl;
 
     return 0;
 }
