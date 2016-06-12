@@ -50,12 +50,12 @@ sz(hm.sz), bc(hm.bc)
 
 HashMap::~HashMap()
 {
-    for (unsigned int i = 0; i < bc; i++)
+    for(unsigned int i = 0; i < bc; i++)
     {
         Node* temp = HashTable[i];
         Node* curr;
 
-        while (curr != nullptr)
+        while(curr != nullptr)
         {
             curr = temp->next;
             temp->next = nullptr;
@@ -193,7 +193,7 @@ double HashMap::loadFactor() const
 
 void HashMap::tableCopy(Node *Target[], Node *Source[], unsigned int cap)
 {
-    for (unsigned int i = 0; i < cap; i++)
+    for(unsigned int i = 0; i < cap; i++)
     {
         Target[i] = Source[i];
     }
@@ -226,6 +226,18 @@ std::string HashMap::get(const std::string& key) const
 
 void HashMap::ClearTable()
 {
+
+    sz = 0;
+
+    for(unsigned int i = 0; i < bc; i++)
+    {
+        while(HashTable[i] != nullptr)
+        {
+            Node* temp = HashTable[i];
+            HashTable[i] = temp->next;
+            delete temp;
+        }
+    }
 
 }
 
