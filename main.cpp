@@ -35,17 +35,19 @@ int main()
     string g = hashMap.get("e");
     unsigned int m = hashMap.maxBucketSize();
 
-    cout << a << endl;
-    cout << g << endl;
-    cout << m << endl;
+
 
     HashMap asdf = hashMap;
 
-    hashMap.~HashMap();
-
+    //hashMap.~HashMap();
+    asdf.put("fda", "Hi");
     unsigned int a2 = asdf.size();
     string g2 = asdf.get("e");
     unsigned int m2 = asdf.maxBucketSize();
+
+    cout << a << endl;
+    cout << g << endl;
+    cout << m << endl;
 
     cout << a2 << endl;
     cout << g2 << endl;

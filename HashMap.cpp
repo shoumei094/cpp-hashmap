@@ -76,6 +76,20 @@ HashMap::~HashMap()
 HashMap& HashMap::operator=(const HashMap& hm)
 {
 
+    if (this != &hm)
+    {
+        Node **newTable = new Node*[hm.bc];
+        tableCopy(newTable, hm.HashTable, hm.bc);
+
+        sz = hm.sz;
+        bc = hm.bc;
+
+        delete[] HashTable;
+        HashTable = newTable;
+    }
+
+    return *this;
+
 }
 
 void HashMap::put(const std::string& key, const std::string& value)
