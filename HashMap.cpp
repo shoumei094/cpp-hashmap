@@ -41,36 +41,22 @@ bc(INITIAL_BUCKET_COUNT), sz(0)
 HashMap::HashMap(const HashMap& hm):
 sz(hm.sz), bc(hm.bc)
 {
+
     Hash h;
     SomeHashFunction = std::bind(&Hash::DefaultHashFunction, &h, std::placeholders::_1);
 
     HashTable = new Node*[hm.bc];
     tableCopy(HashTable, hm.HashTable, hm.bc);
+
 }
 
 HashMap::~HashMap()
 {
-    for(unsigned int i = 0; i < bc; i++)
-    {
-        Node* temp = HashTable[i];
-        Node* curr;
 
-        while(curr != nullptr)
-        {
-            curr = temp->next;
-            temp->next = nullptr;
-            delete temp;
-            temp = curr;
-        }
-
-        temp = nullptr;
-        curr = nullptr;
-    }
-
-    sz = 0;
-    bc = INITIAL_BUCKET_COUNT;
+    ClearTable();
 
     delete[] HashTable;
+
 }
 
 HashMap& HashMap::operator=(const HashMap& hm)
@@ -245,12 +231,15 @@ void HashMap::ClearTable()
 
     for(unsigned int i = 0; i < bc; i++)
     {
+
         while(HashTable[i] != nullptr)
         {
             Node* temp = HashTable[i];
             HashTable[i] = temp->next;
             delete temp;
+            temp = nullptr;
         }
+
     }
 
 }
